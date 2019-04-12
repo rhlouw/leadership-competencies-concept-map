@@ -1,1 +1,80 @@
-<h1>Hello world!<h1>
+<!doctype html>
+<html>
+
+<head>
+	<title> D3 tut1 </title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+	<p>This is a paragraph</p>
+	<script>
+		d3.select("p").text("My first D3");
+
+		var dataArray = [2, 25, 50];
+		var dataArray2 = [{x:10,y:40},{x:1,y:4},{x:40,y:10}]
+
+		var width = 500;
+		var height = 500;
+
+		var widthScale = d3.scale.linear()
+						.domain([0,50])
+						.range([0,width]);
+
+		var color = d3.scale.linear()
+					.domain([0,60])
+					.range(["red","blue"]);
+
+		var axis = d3.svg.axis()
+					.scale(widthScale);
+
+		var canvas = d3.select("body")
+					.append("svg")
+					.attr("width", width)
+					.attr("height", height)
+					.append("g")
+					.attr("transform","translate(50,50)");
+					
+		var bars = canvas.selectAll("rect")
+					.data(dataArray)
+					.enter()
+						.append("rect")
+						.attr("width", function(d) { return widthScale(d);})
+						.attr("height", 50)
+						.attr("fill",function(d){ return color(d)})
+						.attr("y", function (d, i){ return i*100;});
+
+		var addScale = canvas.append("g")
+						.attr("transform","translate(0,300)")
+						.call(axis);
+
+		var circle = canvas.append("circle")
+						.attr("cx",25)
+						.attr("cy",25)
+						.attr("r",10);
+
+		circle.transition()
+			.delay(1000)
+			.duration(2000)
+			.attr("cx",500)
+			.attr("cy",300)
+
+
+		var line = d3.svg.line()
+			.x(function (d){ return d.x;})
+			.y(function (d){ return d.y;});
+
+		group.selectAll("path")
+			.data([dataArray2])
+			.enter()
+			.append("path")
+			.attr("d",line)
+			.attr("fill","none")
+			.attr("stroke","#000")
+			.attr("stroke-width",10);
+
+
+	</script>
+</body>
+
+</html>
